@@ -19,7 +19,7 @@ import { GalweatherService} from '../Services/galweather.service';
 export class HomePage implements OnInit{
   constructor(private weatherService:GalweatherService, private storage: Storage, private router: Router) {}
 
-  weather: any = [];
+  weather: any = [];//component properties
   name:any = "";
   country:any = "";
   temp!:number;
@@ -34,41 +34,53 @@ export class HomePage implements OnInit{
   lat: string = "";
   long: string = "";
   unit: string = "Kelvin"; //default to kelvin
+  galLat: string = "";
+  galLong: string = "";
 
-  async getGPS() {
+  async ionViewWillEnter(){//getting users choice from storage
+    await this.storage.create();
+    this.unit = await this.storage.get('unit');
+    this.getWeatherData(); //fetching weather data
+
+  }
+
+  async getGPS() {//method to get gps coords
     this.coordinates = await Geolocation.getCurrentPosition();
     this.lat = this.coordinates.coords.latitude;
     this.long = this.coordinates.coords.longitude; }
 
-    async ionViewWillEnter(){//getting storage (users choice)
-      await this.storage.create();
-      this.unit = await this.storage.get('unit');
+    ngOnInit(): void {
+      this.getWeatherData(); //fetching weather data when components initialised
     }
+  
 
-  ngOnInit(): void {
+    getWeatherData() {//method to fetch weather data
     this.weatherService.GetWeatherData().subscribe({
       next: (data) => {
-        this.weather = data.weather;
+        this.weather = data.weather;//assigning fetched weather data to component properties
         this.name = data.name; 
         this.country = data.sys.country;
         this.temp = this.convertTemperature(data.main.temp, this.unit);        
         this.feels_like = this.convertTemperature(data.main.feels_like, this.unit);  
         this.description = data.weather[0].description
         this.humidity = data.main.humidity;
-        this.visibility - data.weather[0].visibility
+        this.visibility = data.visibility
         this.pressure = data.main.pressure;
         this.speed = data.wind.speed;
+        this.galLong = data.coord.lon;
+        this.galLat = data.coord.lat;
+
 
       },
    
     });
-  }
+    }
 
   convertTemperature(kelvin: number, unit: string): number {//logic to convert units
-    if (unit === 'Celcius') {
+    if (unit == 'Celsius') {
       return kelvin - 273.15;  //convert Kelvin to Celsius
     }  
-    else if (unit === 'Fahrenheit') {
+    else if (unit == 'Fahrenheit') {
       return (kelvin - 273.15) * 9/5 + 32;  //convert Kelvin to Fahrenheit
     }
 
@@ -76,7 +88,7 @@ export class HomePage implements OnInit{
     return (kelvin)
   }
 
-  navigateTo(event: any): void {
+  navigateTo(event: any): void {//method to navigate to different locations
     const value = event.detail.value;  //getting the selected value
     
     if(value == 'Dublin')

@@ -3,7 +3,7 @@
     <ion-item>
       <ion-select placeholder="County" (ionChange)="navigateTo($event)"><!--ion change to call method when selections change-->
         <div slot="label">Select location</div>
-        <ion-select-option value="Dublin">Dublin</ion-select-option>
+        <ion-select-option value="Dublin">Dublin</ion-select-option><!--ion selection option so user can selecgt which location theyd like to see weather for-->
         <ion-select-option value="Galway">Galway</ion-select-option>
         <ion-select-option value="Belfast">Belfast</ion-select-option>
       </ion-select>
@@ -14,7 +14,7 @@
   <ion-content [fullscreen]="true">
     
     <div id = "settings">   
-      <p [routerLink]="['/dubsettings']">Settings</p> <!--to bring me to settings page when settings is pressed-->
+      <p [routerLink]="['/dubsettings']">Settings</p> <!--to bring user to settings page when settings is pressed-->
     </div>
   
   <div id = "about">   
@@ -25,27 +25,32 @@
       <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Sky.jpg" height = "1000"/>
     </div>
    
-    <div id="location">
+    <div id="location"> <!--displaying county name and country-->
       {{ name }}, {{ country }}
     </div>
   
-    <div id="weather">
-      {{ temp | number:'1.0-0' }}°C 
+    <div id="weather"> <!--displaying temperature with preferred unit-->
+      {{ temp | number:'1.0-0' }}°{{ unit.charAt(0) }} 
     </div>
   
-    <div id="description">
-      Feels Like: {{ feels_like | number:'1.0-0' }}°C. {{ description }} 
+    <div id="description"><!--displaying feels like temp and description-->
+      Feels Like: {{ feels_like | number:'1.0-0' }}°{{ unit.charAt(0) }} {{ description }} 
      </div>
   
-    <div id="details">
+    <div id="details"><!--displaying more in depth weather details-->
       <p>Humidity: {{ humidity }}%</p>
       <p>Visibility: {{ visibility / 1000 }} km</p>
       <p>Pressure: {{ pressure }} hPa</p>
-      <p>Wind Speed: {{ speed }} m/s</p>
+      <p>Wind Speed: {{ speed }} m/s</p>  
+    </div>
+
+    <div id="dublinCoords"><!--displaying county coordinates-->
+      <p>Dublin coordinates</p>
+      {{ dubLat }},{{ dubLong }}
     </div>
   
-    <div id = "userCoords">
-      <ion-button color="medium" (click)="getGPS()">Show my coordinates</ion-button>
+    <div id = "userCoords"><!--displaying user coordinates-->
+      <ion-button color="medium" (click)="getGPS()">Show my coordinates</ion-button><!--click method called when user clicks button-->
       <br>
       {{lat}}, {{long}}
       </div> 

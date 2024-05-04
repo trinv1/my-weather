@@ -18,9 +18,8 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes),
-    importProvidersFrom(HttpClientModule),
-    importProvidersFrom(IonicStorageModule.forRoot())
-
+    importProvidersFrom(HttpClientModule),//importing httpclientmodule to enable http services
+    importProvidersFrom(IonicStorageModule.forRoot())//importing ionicstoragemodule to enable ionic storage
 
   ],
 });
