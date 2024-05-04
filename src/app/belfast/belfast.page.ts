@@ -6,18 +6,18 @@ import { CommonModule } from '@angular/common';
 import { Geolocation } from '@capacitor/geolocation';
 import { Storage } from '@ionic/storage-angular';
 import { FormsModule } from '@angular/forms';
-import { GalweatherService} from '../Services/galweather.service';
+import { BelweatherService } from '../Services/belweather.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-belfast',
+  templateUrl: 'belfast.page.html',
+  styleUrls: ['belfast.page.scss'],
   standalone: true,
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonSearchbar, IonButton, FormsModule, CommonModule, 
     RouterLinkWithHref, IonList, IonItem, IonSelect, IonText, IonSelectOption],
 })
-export class HomePage implements OnInit{
-  constructor(private weatherService:GalweatherService, private storage: Storage, private router: Router) {}
+export class BelfastPage implements OnInit{
+  constructor(private weatherService:BelweatherService, private storage: Storage, private router: Router) {}
 
   weather: any = [];
   name:any = "";
